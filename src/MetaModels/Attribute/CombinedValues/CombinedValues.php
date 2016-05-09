@@ -35,7 +35,7 @@ class CombinedValues extends BaseSimple
      */
     public function getSQLDataType()
     {
-        return 'varchar(255) NOT NULL default \'\'';
+        return 'text NULL';
     }
 
     /**
