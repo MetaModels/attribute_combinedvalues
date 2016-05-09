@@ -27,11 +27,6 @@ use MetaModels\Attribute\BaseSimple;
 
 /**
  * This is the MetaModelAttribute class for handling combined values.
- *
- * @package    MetaModels
- * @subpackage AttributeCombinedValues
- * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @author     Stefan Heimes <cms@men-at-work.de>
  */
 class CombinedValues extends BaseSimple
 {
