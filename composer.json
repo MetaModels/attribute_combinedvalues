@@ -56,6 +56,9 @@
       "sources": {
         "contao": "system/modules/metamodelsattribute_combinedvalues"
       },
+      "runonce": [
+        "runonce/runonce.php"
+      ],
       "transifex": {
         "project": "metamodels",
         "prefix": "attribute_combinedvalues-",
