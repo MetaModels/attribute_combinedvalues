@@ -20,9 +20,6 @@
  * @filesource
  */
 
-/**
- * Register the templates
- */
-TemplateLoader::addFiles(array(
-        'mm_attr_combinedvalues'                  => 'system/modules/metamodelsattribute_combinedvalues/templates',
-));
+// Let our handler handle the necessary steps.
+$handler = new MetaModels\Attribute\CombinedValues\Helper\UpgradeHandler(\Database::getInstance());
+$handler->perform();
