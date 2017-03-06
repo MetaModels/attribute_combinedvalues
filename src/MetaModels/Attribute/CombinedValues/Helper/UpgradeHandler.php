@@ -67,6 +67,10 @@ class UpgradeHandler
      */
     private function ensureCorrectColumnType()
     {
+        if (!$this->database->tableExists('tl_metamodel_attribute')) {
+            return;
+        }
+
         $attributes = $this
             ->database
             ->prepare(
