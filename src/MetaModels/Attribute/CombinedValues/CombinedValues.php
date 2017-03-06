@@ -82,7 +82,7 @@ class CombinedValues extends BaseSimple
             return;
         }
 
-        $arrCombinedValues = '';
+        $arrCombinedValues = array();
         foreach (deserialize($this->get('combinedvalues_fields')) as $strAttribute) {
             if ($this->isMetaField($strAttribute['field_attribute'])) {
                 $strField            = $strAttribute['field_attribute'];
