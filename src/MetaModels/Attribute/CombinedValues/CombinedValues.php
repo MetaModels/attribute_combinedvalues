@@ -17,6 +17,7 @@
  * @author     David Greminger <david.greminger@1up.io>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2017 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_combinedvalues/blob/master/LICENSE LGPL-3.0
  * @filesource
@@ -68,6 +69,11 @@ class CombinedValues extends BaseSimple
         // We do not need to set mandatory, as we will automatically update our value when isunique is given.
         if ($this->get('isunique')) {
             $arrFieldDef['eval']['mandatory'] = false;
+        }
+
+        // If "force_combinedvalues" is ture set alwaysSave to true.
+        if ($this->get('force_combinedvalues')) {
+            $arrFieldDef['eval']['alwaysSave'] = true;
         }
 
         return $arrFieldDef;
