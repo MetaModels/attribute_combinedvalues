@@ -8,16 +8,15 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2013-07-10T10:08:12+02:00
+ * last-updated: 2017-08-24T01:43:24+02:00
  */
 
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_fields']['0']    = 'Campi';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_fields']['1']    = 'Seleziona uno o più attributi da combinare.';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_format']['0']    = 'Formati';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_format']['1']    = 'Usa "%s" o qualsiasi altro segnaposto per creare un testo formattato. Vedi <a href="http://php.net/sprintf" onclick="window.open(this.href)">sprintf</a> per ulteriori informazioni.';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['field_attribute']               = 'Attributi';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_combinedvalues']['0']     = 'Rigenerazione forzzata';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_combinedvalues']['1']     = 'Seleziona questo, se si desidera che i valori combinati verranno rigenerati ogni volta che uno dei campi dipendenti si cambia.';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values']['attributes']   = 'Attributi';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values']['sorting']      = 'Ordinamento';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['combinedvalues'] = 'Valori combinati';
+
