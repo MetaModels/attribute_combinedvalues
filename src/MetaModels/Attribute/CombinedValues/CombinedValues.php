@@ -70,6 +70,12 @@ class CombinedValues extends BaseSimple
             $arrFieldDef['eval']['mandatory'] = false;
         }
 
+        // If "force_combinedvalues" is true set alwaysSave and readonly to true.
+        if ($this->get('force_combinedvalues')) {
+            $arrFieldDef['eval']['alwaysSave'] = true;
+            $arrFieldDef['eval']['readonly']   = true;
+        }
+
         return $arrFieldDef;
     }
 
@@ -109,6 +115,18 @@ class CombinedValues extends BaseSimple
 
         $this->setDataFor(array($objItem->get('id') => $strCombinedValues));
         $objItem->set($this->getColName(), $strCombinedValues);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function get($strKey)
+    {
+        if ($strKey == 'force_alias') {
+            $strKey = 'force_combinedvalues';
+        }
+
+        return parent::get($strKey);
     }
 
     /**

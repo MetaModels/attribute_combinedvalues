@@ -8,13 +8,12 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2015-07-11T04:12:56+02:00
+ * last-updated: 2017-08-24T01:43:24+02:00
  */
 
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_fields']['0']    = 'Поля';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_fields']['1']    = 'Выберите один или несколько атрибутов для объединения.';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_format']['0']    = 'Формат';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_format']['1']    = 'Используйте "%s" или любой другой заполнитель (placeholder) для создания форматированного текста. Смотрите <a href="http://php.net/sprintf" onclick="window.open(this.href)">sprintf</a> для получения дополнительной информации.';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['field_attribute']               = 'Атрибуты';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_combinedvalues']['0']     = 'Принудительно регенерировать';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_combinedvalues']['1']     = 'Выберите, для обновления комбинированных значений каждый раз при изменении любого из подчиненных полей.';
