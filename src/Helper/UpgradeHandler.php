@@ -11,14 +11,14 @@
  * This project is provided in good faith and hope to be usable by anyone.
  *
  * @package    MetaModels
- * @subpackage AttributeCombinedValues
+ * @subpackage AttributeCombinedValuesBundle
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @copyright  2012-2016 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_combinedvalues/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
 
-namespace MetaModels\Attribute\CombinedValues\Helper;
+namespace MetaModels\AttributeCombinedValuesBundle\Helper;
 
 use Contao\Database;
 

@@ -1,0 +1,10 @@
+services:
+    metamodels.attribute_combinedvalues.backend_listner.get_options:
+        class: MetaModels\AttributeCombinedValuesBundle\EventListener\GetOptionsListener
+
+        tags:
+          - {
+              name: kernel.event_listener,
+              event: 'men-at-work.multi-column-wizard.get-options',
+              method: getOptions
+            }

@@ -11,38 +11,23 @@
  * This project is provided in good faith and hope to be usable by anyone.
  *
  * @package    MetaModels
- * @subpackage AttributeCombinedValues
+ * @subpackage AttributeCombinedValuesBundle
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @copyright  2012-2016 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_combinedvalues/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
 
-namespace MetaModels\DcGeneral\Events\Table\Attribute\CombinedValues;
+namespace MetaModels\AttributeCombinedValuesBundle\EventListener;
 
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\IdSerializer;
-use MenAtWork\MultiColumnWizard\Event\GetOptionsEvent;
-use MetaModels\DcGeneral\Events\BaseSubscriber;
+use MultiColumnWizard\Event\GetOptionsEvent;
 
 /**
  * Handle events for tl_metamodel_attribute.
  */
-class Subscriber extends BaseSubscriber
+class GetOptionsListener
 {
-    /**
-     * Register all listeners.
-     *
-     * @return void
-     */
-    public function registerEventsInDispatcher()
-    {
-        $this
-            ->addListener(
-                GetOptionsEvent::NAME,
-                array($this, 'getOptions')
-            );
-    }
-
     /**
      * Check if the event is intended for us.
      *

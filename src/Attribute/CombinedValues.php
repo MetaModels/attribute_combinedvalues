@@ -11,7 +11,7 @@
  * This project is provided in good faith and hope to be usable by anyone.
  *
  * @package    MetaModels
- * @subpackage AttributeCombinedValues
+ * @subpackage AttributeCombinedValuesBundle
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Andreas Isaak <andy.jared@googlemail.com>
  * @author     David Greminger <david.greminger@1up.io>
@@ -22,7 +22,7 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\CombinedValues;
+namespace MetaModels\AttributeCombinedValuesBundle\Attribute;
 
 use MetaModels\Attribute\BaseSimple;
 
@@ -80,7 +80,7 @@ class CombinedValues extends BaseSimple
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function modelSaved($objItem)
     {
@@ -118,7 +118,7 @@ class CombinedValues extends BaseSimple
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function get($strKey)
     {
