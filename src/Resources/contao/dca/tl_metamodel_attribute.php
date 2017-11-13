@@ -36,6 +36,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['combinedvalues_fields'] 
     'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_fields'],
     'exclude'                 => true,
     'inputType'               => 'multiColumnWizard',
+    'sql'                     => 'blob NULL',
     'eval'                    => array
     (
         'tl_class'     => 'clx',
@@ -47,6 +48,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['combinedvalues_fields'] 
                 'exclude'               => true,
                 'inputType'             => 'select',
                 'reference'             => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values'],
+                'sql'                   => 'char(1) NOT NULL default \'\'',
                 'eval' => array
                     (
                         'style'         => 'width:600px',
@@ -70,5 +72,6 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['combinedvalues_format'] 
     'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_format'],
     'exclude'                 => true,
     'inputType'               => 'text',
+    'sql'                     => 'text NULL',
     'eval'                    => array('mandatory' => true, 'tl_class' => 'long'),
 );
