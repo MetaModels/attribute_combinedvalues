@@ -45,15 +45,15 @@
   "autoload": {
     "psr-4": {
       "MetaModels\\AttributeCombinedValuesBundle\\": "src"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "MetaModels\\AttributeCombinedValuesBundle\\Test\\": "tests"
     },
     "files": [
       "src/deprecated-autoload.php"
     ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "MetaModels\\AttributeCombinedValuesBundle\\Test\\": "tests"
+    }
   },
   "extra": {
     "contao-manager-plugin": "MetaModels\\AttributeCombinedValuesBundle\\ContaoManager\\Plugin",
