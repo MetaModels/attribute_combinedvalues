@@ -21,5 +21,5 @@
  */
 
 // Let our handler handle the necessary steps.
-$handler = new MetaModels\Attribute\CombinedValues\Helper\UpgradeHandler(\Database::getInstance());
+$handler = new MetaModels\AttributeCombinedValuesBundle\Helper\UpgradeHandler(\Database::getInstance());
 $handler->perform();
