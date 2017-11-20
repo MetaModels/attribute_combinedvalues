@@ -1,6 +1,9 @@
 services:
     metamodels.attribute_combinedvalues.backend_listner.get_options:
         class: MetaModels\AttributeCombinedValuesBundle\EventListener\GetOptionsListener
+        arguments:
+          - '@metamodels.factory'
+          - '%metamodels.system_columns%'
 
         tags:
           - {

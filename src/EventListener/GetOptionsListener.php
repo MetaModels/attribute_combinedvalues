@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_combinedvalues.
  *
- * (c) 2012-2016 The MetaModels team.
+ * (c) 2012-2017 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,14 +13,17 @@
  * @package    MetaModels
  * @subpackage AttributeCombinedValuesBundle
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @copyright  2012-2016 The MetaModels team.
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2017 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_combinedvalues/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
 
 namespace MetaModels\AttributeCombinedValuesBundle\EventListener;
 
+use Contao\System;
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\IdSerializer;
+use MetaModels\IFactory;
 use MultiColumnWizard\Event\GetOptionsEvent;
 
 /**
@@ -28,6 +31,33 @@ use MultiColumnWizard\Event\GetOptionsEvent;
  */
 class GetOptionsListener
 {
+    /**
+     * The factory.
+     *
+     * @var IFactory
+     */
+    private $factory;
+
+    /**
+     * All system columns that always are defined in a MetaModel table.
+     *
+     * When you alter this, ensure to also change @link{TableManipulatior::STATEMENT_CREATE_TABLE} above.
+     *
+     * @var string[]
+     */
+    private $systemColumns;
+
+    /**
+     * Create a new instance.
+     *
+     * @param IFactory $factory The factory.
+     */
+    public function __construct(IFactory $factory, array $systemColumns)
+    {
+        $this->factory = $factory;
+        $this->systemColumns = $systemColumns;
+    }
+
     /**
      * Check if the event is intended for us.
      *
@@ -76,9 +106,8 @@ class GetOptionsListener
             )->getId();
         }
 
-        $factory       = $this->getServiceContainer()->getFactory();
-        $metaModelName = $factory->translateIdToMetaModelName($metaModelId);
-        $metaModel     = $factory->getMetaModel($metaModelName);
+        $metaModelName = $this->factory->translateIdToMetaModelName($metaModelId);
+        $metaModel     = $this->factory->getMetaModel($metaModelName);
 
         if (!$metaModel) {
             return;
@@ -86,7 +115,7 @@ class GetOptionsListener
 
         $result = array();
         // Add meta fields.
-        $result['meta'] = self::getMetaModelsSystemColumns();
+        $result['meta'] = $this->systemColumns;
 
         // Fetch all attributes except for the current attribute.
         foreach ($metaModel->getAttributes() as $attribute) {
@@ -102,18 +131,5 @@ class GetOptionsListener
         }
 
         $event->setOptions($result);
-    }
-
-    /**
-     * Returns the global MetaModels System Columns (replacement for super global access).
-     *
-     * @return mixed Global MetaModels System Columns
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
-     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
-     */
-    protected static function getMetaModelsSystemColumns()
-    {
-        return $GLOBALS['METAMODELS_SYSTEM_COLUMNS'];
     }
 }
