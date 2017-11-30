@@ -19,11 +19,12 @@
 namespace MetaModels\Test\Attribute\CombinedValues;
 
 use MetaModels\Attribute\CombinedValues\CombinedValues;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests to test class Rating.
  */
-class CombinedValuesTest extends \PHPUnit_Framework_TestCase
+class CombinedValuesTest extends TestCase
 {
     /**
      * Mock a MetaModel.
@@ -35,11 +36,7 @@ class CombinedValuesTest extends \PHPUnit_Framework_TestCase
      */
     protected function mockMetaModel($language, $fallbackLanguage)
     {
-        $metaModel = $this->getMock(
-            'MetaModels\MetaModel',
-            array(),
-            array(array())
-        );
+        $metaModel = $this->getMockForAbstractClass('MetaModels\IMetaModel');
 
         $metaModel
             ->expects($this->any())
