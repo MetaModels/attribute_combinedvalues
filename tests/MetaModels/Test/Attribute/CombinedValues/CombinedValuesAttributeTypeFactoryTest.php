@@ -80,7 +80,7 @@ class CombinedValuesAttributeTypeFactoryTest extends AttributeTypeFactoryTest
         $factory   = new AttributeTypeFactory();
         $values    = [
             'force_combinedvalues'  => '',
-            'combinedvalues_fields' => serialize(['title']),
+            'combinedvalues_fields' => \serialize(['title']),
             'combinedvalues_format' => ''
         ];
         $attribute = $factory->createInstance(
@@ -89,7 +89,7 @@ class CombinedValuesAttributeTypeFactoryTest extends AttributeTypeFactoryTest
         );
 
         $check                          = $values;
-        $check['combinedvalues_fields'] = unserialize($check['combinedvalues_fields']);
+        $check['combinedvalues_fields'] = \unserialize($check['combinedvalues_fields']);
 
         $this->assertInstanceOf('MetaModels\Attribute\CombinedValues\CombinedValues', $attribute);
 

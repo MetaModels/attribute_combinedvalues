@@ -45,7 +45,7 @@ class CombinedValues extends BaseSimple
      */
     public function getAttributeSettingNames()
     {
-        return array_merge(
+        return \array_merge(
             parent::getAttributeSettingNames(),
             [
                 'combinedvalues_fields',
@@ -94,7 +94,7 @@ class CombinedValues extends BaseSimple
         }
 
         $arrCombinedValues = [];
-        foreach (deserialize($this->get('combinedvalues_fields')) as $strAttribute) {
+        foreach (\deserialize($this->get('combinedvalues_fields')) as $strAttribute) {
             if ($this->isMetaField($strAttribute['field_attribute'])) {
                 $strField            = $strAttribute['field_attribute'];
                 $arrCombinedValues[] = $objItem->get($strField);
@@ -104,15 +104,15 @@ class CombinedValues extends BaseSimple
             }
         }
 
-        $strCombinedValues = vsprintf($this->get('combinedvalues_format'), $arrCombinedValues);
-        $strCombinedValues = trim($strCombinedValues);
+        $strCombinedValues = \vsprintf($this->get('combinedvalues_format'), $arrCombinedValues);
+        $strCombinedValues = \trim($strCombinedValues);
 
         if ($this->get('isunique') && $this->searchFor($strCombinedValues)) {
             // Ensure uniqueness.
             $strBaseValue = $strCombinedValues;
             $arrIds       = [$objItem->get('id')];
             $intCount     = 2;
-            while (array_diff($this->searchFor($strCombinedValues), $arrIds)) {
+            while (\array_diff($this->searchFor($strCombinedValues), $arrIds)) {
                 $strCombinedValues = $strBaseValue . ' (' . ($intCount++) . ')';
             }
         }
@@ -142,9 +142,9 @@ class CombinedValues extends BaseSimple
      */
     protected function isMetaField($strField)
     {
-        $strField = trim($strField);
+        $strField = \trim($strField);
 
-        if (in_array($strField, $this->getMetaModelsSystemColumns())) {
+        if (\in_array($strField, $this->getMetaModelsSystemColumns())) {
             return true;
         }
 

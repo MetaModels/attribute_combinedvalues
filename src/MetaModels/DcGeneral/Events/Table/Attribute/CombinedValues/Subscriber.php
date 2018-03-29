@@ -110,7 +110,7 @@ class Subscriber extends BaseSubscriber
                 continue;
             }
 
-            $result['attributes'][$attribute->getColName()] = sprintf(
+            $result['attributes'][$attribute->getColName()] = \sprintf(
                 '%s [%s]',
                 $attribute->getName(),
                 $attribute->get('type')
