@@ -21,6 +21,7 @@ use MetaModels\Attribute\IAttributeTypeFactory;
 use MetaModels\Attribute\CombinedValues\AttributeTypeFactory;
 use MetaModels\IMetaModel;
 use MetaModels\Test\Attribute\AttributeTypeFactoryTest;
+use MetaModels\Attribute\CombinedValues\CombinedValues;
 
 /**
  * Test the attribute factory.
@@ -40,7 +41,7 @@ class CombinedValuesAttributeTypeFactoryTest extends AttributeTypeFactoryTest
      */
     protected function mockMetaModel($tableName, $language, $fallbackLanguage)
     {
-        $metaModel = $this->getMockForAbstractClass('MetaModels\IMetaModel');
+        $metaModel = $this->getMockForAbstractClass(IMetaModel::class);
 
         $metaModel
             ->expects($this->any())
@@ -91,7 +92,7 @@ class CombinedValuesAttributeTypeFactoryTest extends AttributeTypeFactoryTest
         $check                          = $values;
         $check['combinedvalues_fields'] = \unserialize($check['combinedvalues_fields']);
 
-        $this->assertInstanceOf('MetaModels\Attribute\CombinedValues\CombinedValues', $attribute);
+        $this->assertInstanceOf(CombinedValues::class, $attribute);
 
         foreach ($check as $key => $value) {
             $this->assertEquals($value, $attribute->get($key), $key);
