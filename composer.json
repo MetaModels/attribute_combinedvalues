@@ -9,7 +9,7 @@
   ],
   "type": "contao-module",
   "homepage": "http://now.metamodel.me/",
-  "license": "LGPL-3.0+",
+  "license": "LGPL-3.0-or-later",
   "authors": [
     {
       "name": "Christian Schiffler",
@@ -39,7 +39,7 @@
   },
   "require-dev": {
     "cyberspectrum/contao-toolbox": "~0.6",
-    "phpcq/all-tasks": "~1.1",
+    "phpcq/all-tasks": "~1.2",
     "contao/manager-bundle": "~4.4"
   },
   "autoload": {
