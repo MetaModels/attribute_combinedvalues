@@ -11,6 +11,7 @@
  * @subpackage Tests
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     David Greminger <david.greminger@1up.io>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  The MetaModels team.
  * @license    LGPL.
  * @filesource
@@ -19,11 +20,13 @@
 namespace MetaModels\Test\Attribute\CombinedValues;
 
 use MetaModels\Attribute\CombinedValues\CombinedValues;
+use PHPUnit\Framework\TestCase;
+use MetaModels\IMetaModel;
 
 /**
  * Unit tests to test class Rating.
  */
-class CombinedValuesTest extends \PHPUnit_Framework_TestCase
+class CombinedValuesTest extends TestCase
 {
     /**
      * Mock a MetaModel.
@@ -35,11 +38,7 @@ class CombinedValuesTest extends \PHPUnit_Framework_TestCase
      */
     protected function mockMetaModel($language, $fallbackLanguage)
     {
-        $metaModel = $this->getMock(
-            'MetaModels\MetaModel',
-            array(),
-            array(array())
-        );
+        $metaModel = $this->getMockForAbstractClass(IMetaModel::class);
 
         $metaModel
             ->expects($this->any())
@@ -67,6 +66,6 @@ class CombinedValuesTest extends \PHPUnit_Framework_TestCase
     public function testInstantiation()
     {
         $text = new CombinedValues($this->mockMetaModel('en', 'en'));
-        $this->assertInstanceOf('MetaModels\Attribute\CombinedValues\CombinedValues', $text);
+        $this->assertInstanceOf(CombinedValues::class, $text);
     }
 }
