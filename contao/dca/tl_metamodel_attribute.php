@@ -17,6 +17,7 @@
  * @author     David Greminger <david.greminger@1up.io>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_combinedvalues/blob/master/LICENSE LGPL-3.0
  * @filesource
@@ -26,53 +27,45 @@
  * Table tl_metamodel_attribute
  */
 
-$GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['combinedvalues extends _simpleattribute_'] = array
-(
-    '+advanced' => array('force_combinedvalues'),
-    '+display'  => array('combinedvalues_format after description', 'combinedvalues_fields')
-);
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['combinedvalues extends _simpleattribute_'] = [
+    '+advanced' => ['force_combinedvalues'],
+    '+display'  => ['combinedvalues_format after description', 'combinedvalues_fields']
+];
 
-$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['combinedvalues_fields'] = array
-(
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['combinedvalues_fields'] = [
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_fields'],
     'exclude'   => true,
     'inputType' => 'multiColumnWizard',
     'sql'       => 'blob NULL',
-    'eval'      => array
-    (
+    'eval'      => [
         'tl_class'     => 'clx',
-        'columnFields' => array
-        (
-            'field_attribute' => array
-            (
+        'columnFields' => [
+            'field_attribute' => [
                 'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['field_attribute'],
                 'exclude'   => true,
                 'inputType' => 'select',
                 'reference' => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values'],
-                'eval'      => array
-                (
+                'eval'      => [
                     'style'  => 'width:600px',
                     'chosen' => 'true',
-                )
-            ),
-        ),
-    ),
-);
+                ]
+            ],
+        ],
+    ],
+];
 
-$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['force_combinedvalues'] = array
-(
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['force_combinedvalues'] = [
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_combinedvalues'],
     'exclude'   => true,
     'inputType' => 'checkbox',
     'sql'       => 'char(1) NOT NULL default \'\'',
-    'eval'      => array('tl_class' => 'w50'),
-);
+    'eval'      => ['tl_class' => 'w50'],
+];
 
-$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['combinedvalues_format'] = array
-(
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['combinedvalues_format'] = [
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_format'],
     'exclude'   => true,
     'inputType' => 'text',
     'sql'       => 'text NULL',
-    'eval'      => array('mandatory' => true, 'tl_class' => 'long'),
-);
+    'eval'      => ['mandatory' => true, 'tl_class' => 'long'],
+];

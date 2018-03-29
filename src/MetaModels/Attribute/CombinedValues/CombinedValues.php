@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_combinedvalues.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +17,8 @@
  * @author     David Greminger <david.greminger@1up.io>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2017 The MetaModels team.
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_combinedvalues/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -44,22 +45,25 @@ class CombinedValues extends BaseSimple
      */
     public function getAttributeSettingNames()
     {
-        return array_merge(parent::getAttributeSettingNames(), array(
-            'combinedvalues_fields',
-            'combinedvalues_format',
-            'force_combinedvalues',
-            'isunique',
-            'mandatory',
-            'filterable',
-            'searchable',
-            'sortable'
-        ));
+        return array_merge(
+            parent::getAttributeSettingNames(),
+            [
+                'combinedvalues_fields',
+                'combinedvalues_format',
+                'force_combinedvalues',
+                'isunique',
+                'mandatory',
+                'filterable',
+                'searchable',
+                'sortable'
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFieldDefinition($arrOverrides = array())
+    public function getFieldDefinition($arrOverrides = [])
     {
         $arrFieldDef = parent::getFieldDefinition($arrOverrides);
 
@@ -106,14 +110,14 @@ class CombinedValues extends BaseSimple
         if ($this->get('isunique') && $this->searchFor($strCombinedValues)) {
             // Ensure uniqueness.
             $strBaseValue = $strCombinedValues;
-            $arrIds       = array($objItem->get('id'));
+            $arrIds       = [$objItem->get('id')];
             $intCount     = 2;
             while (array_diff($this->searchFor($strCombinedValues), $arrIds)) {
                 $strCombinedValues = $strBaseValue . ' (' . ($intCount++) . ')';
             }
         }
 
-        $this->setDataFor(array($objItem->get('id') => $strCombinedValues));
+        $this->setDataFor([$objItem->get('id') => $strCombinedValues]);
         $objItem->set($this->getColName(), $strCombinedValues);
     }
 
