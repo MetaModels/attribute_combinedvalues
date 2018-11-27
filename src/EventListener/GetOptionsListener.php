@@ -21,8 +21,7 @@
 
 namespace MetaModels\AttributeCombinedValuesBundle\EventListener;
 
-use Contao\System;
-use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\IdSerializer;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelId;
 use MetaModels\IFactory;
 use MultiColumnWizard\Event\GetOptionsEvent;
 
@@ -101,7 +100,7 @@ class GetOptionsListener
         $model       = $event->getModel();
         $metaModelId = $model->getProperty('pid');
         if (!$metaModelId) {
-            $metaModelId = IdSerializer::fromSerialized(
+            $metaModelId = ModelId::fromSerialized(
                 $event->getEnvironment()->getInputProvider()->getValue('pid')
             )->getId();
         }
