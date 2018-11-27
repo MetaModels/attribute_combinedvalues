@@ -98,7 +98,7 @@ class CombinedValuesAttributeTypeFactoryTest extends TestCase
         $factory   = new AttributeTypeFactory($connection = $this->mockConnection(), $this->mockTableManipulator($connection));
         $values    = [
             'force_combinedvalues'  => '',
-            'combinedvalues_fields' => serialize(['title']),
+            'combinedvalues_fields' => \serialize(['title']),
             'combinedvalues_format' => ''
         ];
         $attribute = $factory->createInstance(
@@ -107,7 +107,7 @@ class CombinedValuesAttributeTypeFactoryTest extends TestCase
         );
 
         $check                          = $values;
-        $check['combinedvalues_fields'] = unserialize($check['combinedvalues_fields']);
+        $check['combinedvalues_fields'] = \unserialize($check['combinedvalues_fields']);
 
         $this->assertInstanceOf(CombinedValues::class, $attribute);
 
