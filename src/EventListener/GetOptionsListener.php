@@ -22,8 +22,8 @@
 namespace MetaModels\AttributeCombinedValuesBundle\EventListener;
 
 use ContaoCommunityAlliance\DcGeneral\Data\ModelId;
+use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
 use MetaModels\IFactory;
-use MultiColumnWizard\Event\GetOptionsEvent;
 
 /**
  * Handle events for tl_metamodel_attribute.
