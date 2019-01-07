@@ -47,15 +47,12 @@ class CombinedValuesAttributeTypeFactoryTest extends TestCase
     {
         $metaModel = $this->getMockForAbstractClass(IMetaModel::class);
         $metaModel
-            ->expects($this->any())
             ->method('getTableName')
             ->willReturn($tableName);
         $metaModel
-            ->expects($this->any())
             ->method('getActiveLanguage')
             ->willReturn($language);
         $metaModel
-            ->expects($this->any())
             ->method('getFallbackLanguage')
             ->willReturn($fallbackLanguage);
 
@@ -95,13 +92,14 @@ class CombinedValuesAttributeTypeFactoryTest extends TestCase
      */
     public function testCreateInstance()
     {
-        $factory   = new AttributeTypeFactory($connection = $this->mockConnection(), $this->mockTableManipulator($connection));
-        $values    = [
+        $connection = $this->mockConnection();
+        $factory    = new AttributeTypeFactory($connection, $this->mockTableManipulator($connection));
+        $values     = [
             'force_combinedvalues'  => '',
             'combinedvalues_fields' => \serialize(['title']),
             'combinedvalues_format' => ''
         ];
-        $attribute = $factory->createInstance(
+        $attribute  = $factory->createInstance(
             $values,
             $this->mockMetaModel('mm_test', 'de', 'en')
         );

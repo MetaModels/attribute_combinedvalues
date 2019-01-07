@@ -43,19 +43,16 @@ class CombinedValuesTest extends TestCase
         $metaModel = $this->getMockForAbstractClass(IMetaModel::class);
 
         $metaModel
-            ->expects($this->any())
             ->method('getTableName')
-            ->will($this->returnValue('mm_unittest'));
+            ->willReturn('mm_unittest');
 
         $metaModel
-            ->expects($this->any())
             ->method('getActiveLanguage')
-            ->will($this->returnValue($language));
+            ->willReturn($language);
 
         $metaModel
-            ->expects($this->any())
             ->method('getFallbackLanguage')
-            ->will($this->returnValue($fallbackLanguage));
+            ->willReturn($fallbackLanguage);
 
         return $metaModel;
     }
@@ -93,12 +90,13 @@ class CombinedValuesTest extends TestCase
      */
     public function testInstantiation()
     {
-        $text = new CombinedValues(
+        $connection     = $this->mockConnection();
+        $combinedValues = new CombinedValues(
             $this->mockMetaModel('en', 'en'),
             [],
-            $connection = $this->mockConnection(),
+            $connection,
             $this->mockTableManipulator($connection)
         );
-        $this->assertInstanceOf(CombinedValues::class, $text);
+        $this->assertInstanceOf(CombinedValues::class, $combinedValues);
     }
 }

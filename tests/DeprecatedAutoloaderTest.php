@@ -66,6 +66,8 @@ class DeprecatedAutoloaderTest extends TestCase
      * @param string $oldClass Old class name.
      * @param string $newClass New class name.
      *
+     * @return void
+     *
      * @dataProvider provideAliasClassMap
      */
     public function testDeprecatedClassesAreAliased($oldClass, $newClass)

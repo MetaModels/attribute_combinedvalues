@@ -48,11 +48,12 @@ class GetOptionsListener
     /**
      * Create a new instance.
      *
-     * @param IFactory $factory The factory.
+     * @param IFactory $factory       The factory.
+     * @param array    $systemColumns The system columns.
      */
     public function __construct(IFactory $factory, array $systemColumns)
     {
-        $this->factory = $factory;
+        $this->factory       = $factory;
         $this->systemColumns = $systemColumns;
     }
 
@@ -92,7 +93,7 @@ class GetOptionsListener
      */
     public function getOptions(GetOptionsEvent $event)
     {
-        if (!self::isEventForMe($event)) {
+        if (!$this->isEventForMe($event)) {
             return;
         }
 
