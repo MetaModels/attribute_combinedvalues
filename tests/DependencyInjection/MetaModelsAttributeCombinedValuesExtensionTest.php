@@ -20,10 +20,10 @@
 
 namespace MetaModels\AttributeCombinedValuesBundle\Test\DependencyInjection;
 
+use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
 use MetaModels\AttributeCombinedValuesBundle\Attribute\AttributeTypeFactory;
 use MetaModels\AttributeCombinedValuesBundle\EventListener\GetOptionsListener;
 use MetaModels\AttributeCombinedValuesBundle\DependencyInjection\MetaModelsAttributeCombinedValuesExtension;
-use MultiColumnWizard\Event\GetOptionsEvent;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -84,10 +84,10 @@ class MetaModelsAttributeCombinedValuesExtensionTest extends TestCase
     }
 
     /**
-    * Test that the event listener is registered.
-    *
-    * @return void
-    */
+     * Test that the event listener is registered.
+     *
+     * @return void
+     */
     public function testEventListenersAreRegistered()
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)->getMock();
