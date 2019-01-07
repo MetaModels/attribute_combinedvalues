@@ -1,7 +1,6 @@
 <?php
 
 /**
-/**
  * This file is part of MetaModels/attribute_combinedvalues.
  *
  * (c) 2012-2017 The MetaModels team.
@@ -14,6 +13,7 @@
  * @package    MetaModels
  * @subpackage AttributeCombinedValuesBundle
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2017 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_combinedvalues/blob/master/LICENSE LGPL-3.0
  * @filesource
