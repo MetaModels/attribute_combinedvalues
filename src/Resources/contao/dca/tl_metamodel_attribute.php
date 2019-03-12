@@ -32,11 +32,11 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['combinedvalues ext
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['combinedvalues_fields'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_fields'],
-    'exclude'   => true,
-    'inputType' => 'multiColumnWizard',
-    'sql'       => 'blob NULL',
-    'eval'      => [
+    'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_fields'],
+    'exclude'                 => true,
+    'inputType'               => 'multiColumnWizard',
+    'sql'                     => 'blob NULL',
+    'eval'                    => [
         'tl_class'     => 'clx',
         'columnFields' => [
             'field_attribute' => [
@@ -54,17 +54,17 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['combinedvalues_fields'] 
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['force_combinedvalues'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_combinedvalues'],
-    'exclude'   => true,
-    'inputType' => 'checkbox',
-    'sql'       => 'char(1) NOT NULL default \'\'',
-    'eval'      => ['tl_class' => 'w50'],
+    'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_combinedvalues'],
+    'exclude'                 => true,
+    'inputType'               => 'checkbox',
+    'sql'                     => 'char(1) NOT NULL default \'\'',
+    'eval'                    => ['tl_class' => 'w50'],
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['combinedvalues_format'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_format'],
-    'exclude'   => true,
-    'inputType' => 'text',
-    'sql'       => 'text NULL',
-    'eval'      => ['mandatory' => true, 'tl_class' => 'long'],
+    'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_format'],
+    'exclude'                 => true,
+    'inputType'               => 'text',
+    'sql'                     => 'text NULL',
+    'eval'                    => ['mandatory' => true, 'tl_class' => 'long'],
 ];

@@ -18,7 +18,7 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\CombinedValues\Helper;
+namespace MetaModels\AttributeCombinedValuesBundle\Helper;
 
 use Contao\Database;
 

@@ -12,30 +12,30 @@
  *
  * @package    MetaModels/attribute_combinedvalues
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_combinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
-namespace MetaModels\Attribute\CombinedValues;
+namespace MetaModels\AttributeCombinedValuesBundle\DependencyInjection;
 
-use MetaModels\Attribute\AbstractAttributeTypeFactory;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
- * Attribute type factory for combined values attributes.
+ * This is the Bundle extension.
  */
-class AttributeTypeFactory extends AbstractAttributeTypeFactory
+class MetaModelsAttributeCombinedValuesExtension extends Extension
 {
     /**
      * {@inheritDoc}
      */
-    public function __construct()
+    public function load(array $configs, ContainerBuilder $container)
     {
-        parent::__construct();
-
-        $this->typeName  = 'combinedvalues';
-        $this->typeIcon  = 'system/modules/metamodelsattribute_combinedvalues/html/combinedvalues.png';
-        $this->typeClass = CombinedValues::class;
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yml');
+        $loader->load('listeners.yml');
     }
 }

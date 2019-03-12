@@ -22,8 +22,9 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\CombinedValues;
+namespace MetaModels\AttributeCombinedValuesBundle\Attribute;
 
+use Contao\StringUtil;
 use MetaModels\Attribute\BaseSimple;
 
 /**
@@ -83,7 +84,7 @@ class CombinedValues extends BaseSimple
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function modelSaved($objItem)
     {
@@ -93,7 +94,7 @@ class CombinedValues extends BaseSimple
         }
 
         $arrCombinedValues = [];
-        foreach (\deserialize($this->get('combinedvalues_fields')) as $strAttribute) {
+        foreach (StringUtil::deserialize($this->get('combinedvalues_fields')) as $strAttribute) {
             if ($this->isMetaField($strAttribute['field_attribute'])) {
                 $strField            = $strAttribute['field_attribute'];
                 $arrCombinedValues[] = $objItem->get($strField);
@@ -121,7 +122,7 @@ class CombinedValues extends BaseSimple
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function get($strKey)
     {

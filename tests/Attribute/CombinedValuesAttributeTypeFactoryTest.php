@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of MetaModels/attribute_combinedvalues.
  *
@@ -17,18 +18,19 @@
  * @filesource
  */
 
-namespace MetaModels\Test\Attribute\CombinedValues;
+namespace MetaModels\AttributeCombinedValuesBundle\Test\Attribute;
 
-use MetaModels\Attribute\IAttributeTypeFactory;
-use MetaModels\Attribute\CombinedValues\AttributeTypeFactory;
+use Doctrine\DBAL\Connection;
+use MetaModels\AttributeCombinedValuesBundle\Attribute\AttributeTypeFactory;
+use MetaModels\AttributeCombinedValuesBundle\Attribute\CombinedValues;
+use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
-use MetaModels\Test\Attribute\AttributeTypeFactoryTest;
-use MetaModels\Attribute\CombinedValues\CombinedValues;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test the attribute factory.
  */
-class CombinedValuesAttributeTypeFactoryTest extends AttributeTypeFactoryTest
+class CombinedValuesAttributeTypeFactoryTest extends TestCase
 {
     /**
      * Mock a MetaModel.
@@ -44,33 +46,43 @@ class CombinedValuesAttributeTypeFactoryTest extends AttributeTypeFactoryTest
     protected function mockMetaModel($tableName, $language, $fallbackLanguage)
     {
         $metaModel = $this->getMockForAbstractClass(IMetaModel::class);
-
         $metaModel
-            ->expects($this->any())
             ->method('getTableName')
-            ->will($this->returnValue($tableName));
-
+            ->willReturn($tableName);
         $metaModel
-            ->expects($this->any())
             ->method('getActiveLanguage')
-            ->will($this->returnValue($language));
-
+            ->willReturn($language);
         $metaModel
-            ->expects($this->any())
             ->method('getFallbackLanguage')
-            ->will($this->returnValue($fallbackLanguage));
+            ->willReturn($fallbackLanguage);
 
         return $metaModel;
     }
 
     /**
-     * Override the method to run the tests on the attribute factories to be tested.
+     * Mock the database connection.
      *
-     * @return IAttributeTypeFactory[]
+     * @return \PHPUnit_Framework_MockObject_MockObject|Connection
      */
-    protected function getAttributeFactories()
+    private function mockConnection()
     {
-        return [new AttributeTypeFactory()];
+        return $this->getMockBuilder(Connection::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    /**
+     * Mock the table manipulator.
+     *
+     * @param Connection $connection The database connection mock.
+     *
+     * @return TableManipulator|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function mockTableManipulator(Connection $connection)
+    {
+        return $this->getMockBuilder(TableManipulator::class)
+            ->setConstructorArgs([$connection, []])
+            ->getMock();
     }
 
     /**
@@ -78,15 +90,16 @@ class CombinedValuesAttributeTypeFactoryTest extends AttributeTypeFactoryTest
      *
      * @return void
      */
-    public function testCreateSelect()
+    public function testCreateInstance()
     {
-        $factory   = new AttributeTypeFactory();
-        $values    = [
+        $connection = $this->mockConnection();
+        $factory    = new AttributeTypeFactory($connection, $this->mockTableManipulator($connection));
+        $values     = [
             'force_combinedvalues'  => '',
             'combinedvalues_fields' => \serialize(['title']),
             'combinedvalues_format' => ''
         ];
-        $attribute = $factory->createInstance(
+        $attribute  = $factory->createInstance(
             $values,
             $this->mockMetaModel('mm_test', 'de', 'en')
         );

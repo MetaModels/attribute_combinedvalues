@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of MetaModels/attribute_combinedvalues.
  *
@@ -11,18 +12,18 @@
  *
  * @package    MetaModels/attribute_combinedvalues
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @author     David Greminger <david.greminger@1up.io>
- * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_combinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
-namespace MetaModels\Test\Attribute\CombinedValues;
+namespace MetaModels\AttributeCombinedValuesBundle\Test\Attribute;
 
-use MetaModels\Attribute\CombinedValues\CombinedValues;
-use PHPUnit\Framework\TestCase;
+use Doctrine\DBAL\Connection;
+use MetaModels\AttributeCombinedValuesBundle\Attribute\CombinedValues;
+use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests to test class Rating.
@@ -42,21 +43,44 @@ class CombinedValuesTest extends TestCase
         $metaModel = $this->getMockForAbstractClass(IMetaModel::class);
 
         $metaModel
-            ->expects($this->any())
             ->method('getTableName')
-            ->will($this->returnValue('mm_unittest'));
+            ->willReturn('mm_unittest');
 
         $metaModel
-            ->expects($this->any())
             ->method('getActiveLanguage')
-            ->will($this->returnValue($language));
+            ->willReturn($language);
 
         $metaModel
-            ->expects($this->any())
             ->method('getFallbackLanguage')
-            ->will($this->returnValue($fallbackLanguage));
+            ->willReturn($fallbackLanguage);
 
         return $metaModel;
+    }
+
+    /**
+     * Mock the database connection.
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject|Connection
+     */
+    private function mockConnection()
+    {
+        return $this->getMockBuilder(Connection::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    /**
+     * Mock the table manipulator.
+     *
+     * @param Connection $connection The database connection mock.
+     *
+     * @return TableManipulator|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function mockTableManipulator(Connection $connection)
+    {
+        return $this->getMockBuilder(TableManipulator::class)
+            ->setConstructorArgs([$connection, []])
+            ->getMock();
     }
 
     /**
@@ -66,7 +90,13 @@ class CombinedValuesTest extends TestCase
      */
     public function testInstantiation()
     {
-        $text = new CombinedValues($this->mockMetaModel('en', 'en'));
-        $this->assertInstanceOf(CombinedValues::class, $text);
+        $connection     = $this->mockConnection();
+        $combinedValues = new CombinedValues(
+            $this->mockMetaModel('en', 'en'),
+            [],
+            $connection,
+            $this->mockTableManipulator($connection)
+        );
+        $this->assertInstanceOf(CombinedValues::class, $combinedValues);
     }
 }

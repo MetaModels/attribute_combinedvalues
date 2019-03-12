@@ -19,5 +19,5 @@
  */
 
 // Let our handler handle the necessary steps.
-$handler = new MetaModels\Attribute\CombinedValues\Helper\UpgradeHandler(\Contao\Database::getInstance());
+$handler = new MetaModels\AttributeCombinedValuesBundle\Helper\UpgradeHandler(\Contao\Database::getInstance());
 $handler->perform();

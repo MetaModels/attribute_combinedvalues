@@ -18,29 +18,43 @@
  * @filesource
  */
 
-namespace MetaModels\DcGeneral\Events\Table\Attribute\CombinedValues;
+namespace MetaModels\AttributeCombinedValuesBundle\EventListener;
 
-use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\IdSerializer;
-use MenAtWork\MultiColumnWizard\Event\GetOptionsEvent;
-use MetaModels\DcGeneral\Events\BaseSubscriber;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelId;
+use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
+use MetaModels\IFactory;
 
 /**
  * Handle events for tl_metamodel_attribute.
  */
-class Subscriber extends BaseSubscriber
+class GetOptionsListener
 {
     /**
-     * Register all listeners.
+     * The factory.
      *
-     * @return void
+     * @var IFactory
      */
-    public function registerEventsInDispatcher()
+    private $factory;
+
+    /**
+     * All system columns that always are defined in a MetaModel table.
+     *
+     * When you alter this, ensure to also change @link{TableManipulatior::STATEMENT_CREATE_TABLE} above.
+     *
+     * @var string[]
+     */
+    private $systemColumns;
+
+    /**
+     * Create a new instance.
+     *
+     * @param IFactory $factory       The factory.
+     * @param array    $systemColumns The system columns.
+     */
+    public function __construct(IFactory $factory, array $systemColumns)
     {
-        $this
-            ->addListener(
-                GetOptionsEvent::NAME,
-                [$this, 'getOptions']
-            );
+        $this->factory       = $factory;
+        $this->systemColumns = $systemColumns;
     }
 
     /**
@@ -79,21 +93,20 @@ class Subscriber extends BaseSubscriber
      */
     public function getOptions(GetOptionsEvent $event)
     {
-        if (!self::isEventForMe($event)) {
+        if (!$this->isEventForMe($event)) {
             return;
         }
 
         $model       = $event->getModel();
         $metaModelId = $model->getProperty('pid');
         if (!$metaModelId) {
-            $metaModelId = IdSerializer::fromSerialized(
+            $metaModelId = ModelId::fromSerialized(
                 $event->getEnvironment()->getInputProvider()->getValue('pid')
             )->getId();
         }
 
-        $factory       = $this->getServiceContainer()->getFactory();
-        $metaModelName = $factory->translateIdToMetaModelName($metaModelId);
-        $metaModel     = $factory->getMetaModel($metaModelName);
+        $metaModelName = $this->factory->translateIdToMetaModelName($metaModelId);
+        $metaModel     = $this->factory->getMetaModel($metaModelName);
 
         if (!$metaModel) {
             return;
@@ -101,7 +114,7 @@ class Subscriber extends BaseSubscriber
 
         $result = [];
         // Add meta fields.
-        $result['meta'] = self::getMetaModelsSystemColumns();
+        $result['meta'] = $this->systemColumns;
 
         // Fetch all attributes except for the current attribute.
         foreach ($metaModel->getAttributes() as $attribute) {
@@ -117,18 +130,5 @@ class Subscriber extends BaseSubscriber
         }
 
         $event->setOptions($result);
-    }
-
-    /**
-     * Returns the global MetaModels System Columns (replacement for super global access).
-     *
-     * @return mixed Global MetaModels System Columns
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
-     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
-     */
-    protected static function getMetaModelsSystemColumns()
-    {
-        return $GLOBALS['METAMODELS_SYSTEM_COLUMNS'];
     }
 }
