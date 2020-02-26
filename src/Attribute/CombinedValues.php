@@ -163,4 +163,14 @@ class CombinedValues extends BaseSimple
     {
         return $GLOBALS['METAMODELS_SYSTEM_COLUMNS'];
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * This is needed for compatibility with MySQL strict mode.
+     */
+    public function serializeData($value)
+    {
+        return $value === '' ? null : $value;
+    }
 }
