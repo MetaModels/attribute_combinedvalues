@@ -65,7 +65,7 @@ class ChangeColumnTypeMigration extends AbstractMigration
      * Must only run if:
      * - the MM tables are present AND
      * - there are some columns defined AND
-     * - these columns do not allow null values yet.
+     * - these columns not type text.
      *
      * @return bool
      */
@@ -175,7 +175,7 @@ class ChangeColumnTypeMigration extends AbstractMigration
     private function fixColumn(string $tableName, string $columnName): void
     {
         $this->connection->query(
-            \sprintf('ALTER TABLE %1$s CHANGE %2$s %2$s %3$s', $tableName, $columnName, 'text')
+            \sprintf('ALTER TABLE %1$s CHANGE %1$s.%2$s %1$s.%2$s %3$s', $tableName, $columnName, 'text')
         );
     }
 }
