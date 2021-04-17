@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_combinedvalues.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2021 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,7 @@
  * @package    MetaModels/attribute_combinedvalues
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @copyright  2012-2021 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_combinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -23,7 +23,6 @@ namespace MetaModels\AttributeCombinedValuesBundle\Test;
 use MetaModels\AttributeCombinedValuesBundle\Attribute\AttributeTypeFactory;
 use MetaModels\AttributeCombinedValuesBundle\Attribute\CombinedValues;
 use MetaModels\AttributeCombinedValuesBundle\EventListener\GetOptionsListener;
-use MetaModels\AttributeCombinedValuesBundle\Helper\UpgradeHandler;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -39,7 +38,6 @@ class DeprecatedAutoloaderTest extends TestCase
     private static $classes = [
         'MetaModels\Attribute\CombinedValues\CombinedValues' => CombinedValues::class,
         'MetaModels\Attribute\CombinedValues\AttributeTypeFactory' => AttributeTypeFactory::class,
-        'MetaModels\Attribute\CombinedValues\Helper\UpgradeHandler' => UpgradeHandler::class,
         'MetaModels\DcGeneral\Events\Table\Attribute\CombinedValues\Subscriber' => GetOptionsListener::class
     ];
 
