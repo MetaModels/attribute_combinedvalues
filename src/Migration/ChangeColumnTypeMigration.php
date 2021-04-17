@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2020 The MetaModels team.
+ * (c) 2012-2021 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,8 @@
  *
  * @package    MetaModels/attribute_alias
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2020 The MetaModels team.
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2021 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -25,6 +26,7 @@ use Contao\CoreBundle\Migration\AbstractMigration;
 use Contao\CoreBundle\Migration\MigrationResult;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
+use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\TextType;
 
 /**
@@ -119,7 +121,15 @@ class ChangeColumnTypeMigration extends AbstractMigration
 
         $result = [];
         foreach ($langColumns as $tableName => $tableColumnNames) {
-            $columns = $schemaManager->listTableColumns($tableName);
+            /** @var Column[] $columns */
+            $columns = [];
+            // The schema manager return the column list with lowercase keys, wo got to use the real names.
+            \array_map(
+                function (Column $column) use (&$columns) {
+                    $columns[$column->getName()] = $column;
+                },
+                $schemaManager->listTableColumns($tableName)
+            );
             foreach ($tableColumnNames as $tableColumnName) {
                 $column = ($columns[$tableColumnName] ?? null);
                 if (null === $column) {
