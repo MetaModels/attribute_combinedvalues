@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_combinedvalues.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2021 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,8 @@
  *
  * @package    MetaModels/attribute_combinedvalues
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2021 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_combinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -28,6 +29,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests the contao manager plugin.
+ *
+ * @covers \MetaModels\AttributeCombinedValuesBundle\ContaoManager\Plugin
  */
 class PluginTest extends TestCase
 {
@@ -40,8 +43,8 @@ class PluginTest extends TestCase
     {
         $plugin = new Plugin();
 
-        $this->assertInstanceOf(Plugin::class, $plugin);
-        $this->assertInstanceOf(BundlePluginInterface::class, $plugin);
+        self::assertInstanceOf(Plugin::class, $plugin);
+        self::assertInstanceOf(BundlePluginInterface::class, $plugin);
     }
 
     /**
@@ -55,13 +58,13 @@ class PluginTest extends TestCase
         $plugin  = new Plugin();
         $bundles = $plugin->getBundles($parser);
 
-        $this->assertContainsOnlyInstancesOf(BundleConfig::class, $bundles);
-        $this->assertCount(1, $bundles);
+        self::assertContainsOnlyInstancesOf(BundleConfig::class, $bundles);
+        self::assertCount(1, $bundles);
 
         /** @var BundleConfig $bundleConfig */
         $bundleConfig = $bundles[0];
 
-        $this->assertEquals([MetaModelsCoreBundle::class], $bundleConfig->getLoadAfter());
-        $this->assertEquals(['metamodelsattribute_combinedvalues'], $bundleConfig->getReplace());
+        self::assertEquals([MetaModelsCoreBundle::class], $bundleConfig->getLoadAfter());
+        self::assertEquals(['metamodelsattribute_combinedvalues'], $bundleConfig->getReplace());
     }
 }

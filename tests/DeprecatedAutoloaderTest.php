@@ -27,6 +27,10 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * This class tests if the deprecated autoloader works.
+ *
+ * @covers \MetaModels\AttributeCombinedValuesBundle\Attribute\CombinedValues
+ * @covers \MetaModels\AttributeCombinedValuesBundle\Attribute\AttributeTypeFactory
+ * @covers \MetaModels\AttributeCombinedValuesBundle\EventListener\GetOptionsListener
  */
 class DeprecatedAutoloaderTest extends TestCase
 {
@@ -69,11 +73,11 @@ class DeprecatedAutoloaderTest extends TestCase
      */
     public function testDeprecatedClassesAreAliased($oldClass, $newClass)
     {
-        $this->assertTrue(\class_exists($oldClass), \sprintf('Class alias "%s" is not found.', $oldClass));
+        self::assertTrue(\class_exists($oldClass), \sprintf('Class alias "%s" is not found.', $oldClass));
 
         $oldClassReflection = new \ReflectionClass($oldClass);
         $newClassReflection = new \ReflectionClass($newClass);
 
-        $this->assertSame($newClassReflection->getFileName(), $oldClassReflection->getFileName());
+        self::assertSame($newClassReflection->getFileName(), $oldClassReflection->getFileName());
     }
 }
