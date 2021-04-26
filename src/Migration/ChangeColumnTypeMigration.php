@@ -201,5 +201,11 @@ class ChangeColumnTypeMigration extends AbstractMigration
         $tableDiff->fromTable        = $table;
         $tableDiff->changedColumns[] = $columnDiff;
         $manager->alterTable($tableDiff);
+
+        $this->connection->createQueryBuilder()
+            ->update($tableName, 't')
+            ->set('t.' . $column->getName(), 'null')
+            ->where('t.' . $column->getName() . ' = ""')
+            ->execute();
     }
 }

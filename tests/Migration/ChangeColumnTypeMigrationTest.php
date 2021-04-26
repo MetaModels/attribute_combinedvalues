@@ -106,6 +106,7 @@ class ChangeColumnTypeMigrationTest extends TestCase
             ->method('getSchemaManager')
             ->willReturn($manager);
 
+        $queryBuilderExecuted = 0;
         if ($configuration->requiredTablesExist) {
             $attributes = [
                 ['metamodel' => 'mm_table_2', 'attribute' => 'normal'],
@@ -123,6 +124,16 @@ class ChangeColumnTypeMigrationTest extends TestCase
 
             $queryBuilder = $this->createMock(QueryBuilder::class);
             $queryBuilder
+                ->expects($configuration->shouldRun ? self::exactly(4)  : self::never())
+                ->method('update')
+                ->withConsecutive(['mm_table_2', 't'], ['mm_table_2', 't'], ['mm_table_1', 't'], ['mm_table_1', 't'])
+                ->willReturn($queryBuilder);
+            $queryBuilder
+                ->expects($configuration->shouldRun ? self::exactly(4)  : self::never())
+                ->method('set')
+                ->withConsecutive(['t.normal'], ['t.camelCase'], ['t.camelCase'], ['t.normal'])
+                ->willReturn($queryBuilder);
+            $queryBuilder
                 ->expects($configuration->shouldRun ? self::exactly(2)  : self::once())
                 ->method('select')
                 ->with('metamodel.tableName AS metamodel', 'attribute.colName AS attribute')
@@ -138,9 +149,9 @@ class ChangeColumnTypeMigrationTest extends TestCase
                 ->with('attribute', 'tl_metamodel', 'metamodel', 'attribute.pid = metamodel.id')
                 ->willReturn($queryBuilder);
             $queryBuilder
-                ->expects($configuration->shouldRun ? self::exactly(2)  : self::once())
+                ->expects($configuration->shouldRun ? self::exactly(6)  : self::once())
                 ->method('where')
-                ->with('attribute.type=:type')
+                ->withConsecutive(['attribute.type=:type'], ['attribute.type=:type'], ['t.normal = ""'], ['t.camelCase = ""'], ['t.camelCase = ""'], ['t.normal = ""'])
                 ->willReturn($queryBuilder);
             $queryBuilder
                 ->expects($configuration->shouldRun ? self::exactly(2)  : self::once())
@@ -148,12 +159,21 @@ class ChangeColumnTypeMigrationTest extends TestCase
                 ->with('type', 'combinedvalues')
                 ->willReturn($queryBuilder);
             $queryBuilder
-                ->expects($configuration->shouldRun ? self::exactly(2)  : self::once())
+                ->expects($configuration->shouldRun ? self::exactly(6)  : self::once())
                 ->method('execute')
-                ->willReturn($result);
+                ->willReturnCallback(
+                    function () use (&$queryBuilderExecuted, $result) {
+                        $queryBuilderExecuted++;
+                        if ($queryBuilderExecuted <= 2) {
+                            return $result;
+                        }
+
+                        return 1;
+                    }
+                );
 
             $connection
-                ->expects($configuration->shouldRun ? self::exactly(2)  : self::once())
+                ->expects($configuration->shouldRun ? self::exactly(6)  : self::once())
                 ->method('createQueryBuilder')
                 ->willReturn($queryBuilder);
         }
@@ -190,6 +210,7 @@ class ChangeColumnTypeMigrationTest extends TestCase
 
         $migration = new ChangeColumnTypeMigration($connection);
         self::assertSame($configuration->shouldRun, $migration->shouldRun());
+        self::assertSame($configuration->requiredTablesExist ? 1 : 0, $queryBuilderExecuted);
 
         if (!$configuration->shouldRun) {
             return;
@@ -206,6 +227,7 @@ class ChangeColumnTypeMigrationTest extends TestCase
             'Adjusted column(s): mm_table_2.normal, mm_table_2.camelCase, mm_table_1.camelCase, mm_table_1.normal',
             $migrationResult->getMessage()
         );
+        self::assertSame(6, $queryBuilderExecuted);
     }
 
 }
