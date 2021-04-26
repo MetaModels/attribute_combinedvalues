@@ -164,7 +164,7 @@ class ChangeColumnTypeMigration extends AbstractMigration
             ->where('attribute.type=:type')
             ->setParameter('type', 'combinedvalues')
             ->execute()
-            ->fetchAll(FetchMode::ASSOCIATIVE);
+            ->fetchAllAssociative();
 
         $result = [];
         foreach ($langColumns as $langColumn) {
