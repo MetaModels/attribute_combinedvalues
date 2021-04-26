@@ -26,7 +26,10 @@ use Contao\CoreBundle\Migration\AbstractMigration;
 use Contao\CoreBundle\Migration\MigrationResult;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\ColumnDiff;
+use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types\TextType;
 
 /**
@@ -96,10 +99,10 @@ class ChangeColumnTypeMigration extends AbstractMigration
     {
         $langColumns = $this->fetchNotTypeTextColumns();
         $message     = [];
-        foreach ($langColumns as $tableName => $tableColumnNames) {
-            foreach ($tableColumnNames as $tableColumnName) {
-                $this->fixColumn($tableName, $tableColumnName);
-                $message[] = $tableName . '.' . $tableColumnName;
+        foreach ($langColumns as $tableName => $tableColumns) {
+            foreach ($tableColumns as $tableColumn) {
+                $this->fixColumn($tableName, $tableColumn);
+                $message[] = $tableName . '.' . $tableColumn->getName();
             }
         }
 
@@ -138,7 +141,7 @@ class ChangeColumnTypeMigration extends AbstractMigration
                 if (($column->getType() instanceof TextType)) {
                     continue;
                 }
-                $result[$tableName][$column->getName()] = $column->getName();
+                $result[$tableName][$column->getName()] = $column;
             }
         }
 
@@ -177,15 +180,26 @@ class ChangeColumnTypeMigration extends AbstractMigration
     /**
      * Fix a table column.
      *
-     * @param string $tableName  The name of the table.
-     * @param string $columnName The name of the column.
+     * @param string $tableName The name of the table.
+     * @param Column $column    The column.
      *
      * @return void
      */
-    private function fixColumn(string $tableName, string $columnName): void
+    private function fixColumn(string $tableName, Column $column): void
     {
-        $this->connection->query(
-            \sprintf('ALTER TABLE %1$s CHANGE %1$s.%2$s %1$s.%2$s %3$s', $tableName, $columnName, 'text')
-        );
+        $manager = $this->connection->getSchemaManager();
+        $table   = $manager->listTableDetails($tableName);
+
+        $changeColumn = new Column($column->getName(), new TextType());
+        $changeColumn
+            ->setLength(MySqlPlatform::LENGTH_LIMIT_TEXT)
+            ->setNotnull(false)
+            ->setDefault(null);
+        $columnDiff = new ColumnDiff($column->getName(), $changeColumn);
+
+        $tableDiff                   = new TableDiff($tableName);
+        $tableDiff->fromTable        = $table;
+        $tableDiff->changedColumns[] = $columnDiff;
+        $manager->alterTable($tableDiff);
     }
 }
