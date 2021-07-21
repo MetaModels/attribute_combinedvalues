@@ -26,6 +26,8 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * This is the Bundle extension.
+ *
+ * @SuppressWarnings(PHPMD.LongClassName)
  */
 class MetaModelsAttributeCombinedValuesExtension extends Extension
 {
