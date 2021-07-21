@@ -28,6 +28,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests the contao manager plugin.
+ *
+ * @covers \MetaModels\AttributeCombinedValuesBundle\ContaoManager\Plugin
  */
 class PluginTest extends TestCase
 {

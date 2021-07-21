@@ -29,6 +29,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Test the attribute factory.
+ *
+ * @covers \MetaModels\AttributeCombinedValuesBundle\Attribute\AttributeTypeFactory
  */
 class CombinedValuesAttributeTypeFactoryTest extends TestCase
 {

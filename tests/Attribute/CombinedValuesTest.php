@@ -27,6 +27,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests to test class Rating.
+ *
+ * @covers \MetaModels\AttributeCombinedValuesBundle\Attribute\CombinedValues
  */
 class CombinedValuesTest extends TestCase
 {

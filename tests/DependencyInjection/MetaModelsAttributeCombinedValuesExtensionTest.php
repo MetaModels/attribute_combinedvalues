@@ -30,6 +30,8 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 /**
  * This test case test the extension.
+ *
+ * @covers \MetaModels\AttributeCombinedValuesBundle\DependencyInjection\MetaModelsAttributeCombinedValuesExtension
  */
 class MetaModelsAttributeCombinedValuesExtensionTest extends TestCase
 {
