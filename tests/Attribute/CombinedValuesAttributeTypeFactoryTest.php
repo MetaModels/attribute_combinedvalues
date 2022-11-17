@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_combinedvalues.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2021 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,7 @@
  * @package    MetaModels/attribute_combinedvalues
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @copyright  2012-2021 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_combinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -25,10 +25,13 @@ use MetaModels\AttributeCombinedValuesBundle\Attribute\AttributeTypeFactory;
 use MetaModels\AttributeCombinedValuesBundle\Attribute\CombinedValues;
 use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Test the attribute factory.
+ *
+ * @covers \MetaModels\AttributeCombinedValuesBundle\Attribute\AttributeTypeFactory
  */
 class CombinedValuesAttributeTypeFactoryTest extends TestCase
 {
@@ -62,7 +65,7 @@ class CombinedValuesAttributeTypeFactoryTest extends TestCase
     /**
      * Mock the database connection.
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|Connection
+     * @return MockObject|Connection
      */
     private function mockConnection()
     {
@@ -76,7 +79,7 @@ class CombinedValuesAttributeTypeFactoryTest extends TestCase
      *
      * @param Connection $connection The database connection mock.
      *
-     * @return TableManipulator|\PHPUnit_Framework_MockObject_MockObject
+     * @return TableManipulator|MockObject
      */
     private function mockTableManipulator(Connection $connection)
     {
@@ -107,10 +110,10 @@ class CombinedValuesAttributeTypeFactoryTest extends TestCase
         $check                          = $values;
         $check['combinedvalues_fields'] = \unserialize($check['combinedvalues_fields']);
 
-        $this->assertInstanceOf(CombinedValues::class, $attribute);
+        self::assertInstanceOf(CombinedValues::class, $attribute);
 
         foreach ($check as $key => $value) {
-            $this->assertEquals($value, $attribute->get($key), $key);
+            self::assertEquals($value, $attribute->get($key), $key);
         }
     }
 }

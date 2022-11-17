@@ -6,3 +6,9 @@ services:
             - '@metamodels.table_manipulator'
         tags:
           - { name: metamodels.attribute_factory }
+
+    MetaModels\AttributeCombinedValuesBundle\Migration\ChangeColumnTypeMigration:
+        arguments:
+            - '@database_connection'
+        tags:
+            - name: contao.migration

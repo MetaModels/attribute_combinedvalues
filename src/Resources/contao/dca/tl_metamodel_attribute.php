@@ -32,12 +32,12 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['combinedvalues ext
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['combinedvalues_fields'] = [
-    'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_fields'],
-    'exclude'                 => true,
-    'inputType'               => 'multiColumnWizard',
-    'sql'                     => 'blob NULL',
-    'eval'                    => [
-        'tl_class'     => 'clx',
+    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_fields'],
+    'exclude'   => true,
+    'inputType' => 'multiColumnWizard',
+    'sql'       => 'blob NULL',
+    'eval'      => [
+        'tl_class'     => 'clr w50',
         'columnFields' => [
             'field_attribute' => [
                 'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['field_attribute'],
@@ -45,7 +45,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['combinedvalues_fields'] 
                 'inputType' => 'select',
                 'reference' => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values'],
                 'eval'      => [
-                    'style'  => 'width:600px',
+                    'style'  => 'width:100%',
                     'chosen' => 'true',
                 ]
             ],
@@ -54,17 +54,17 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['combinedvalues_fields'] 
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['force_combinedvalues'] = [
-    'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_combinedvalues'],
-    'exclude'                 => true,
-    'inputType'               => 'checkbox',
-    'sql'                     => 'char(1) NOT NULL default \'\'',
-    'eval'                    => ['tl_class' => 'w50'],
+    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_combinedvalues'],
+    'exclude'   => true,
+    'inputType' => 'checkbox',
+    'sql'       => 'char(1) NOT NULL default \'\'',
+    'eval'      => ['tl_class' => 'w50'],
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['combinedvalues_format'] = [
-    'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_format'],
-    'exclude'                 => true,
-    'inputType'               => 'text',
-    'sql'                     => 'text NULL',
-    'eval'                    => ['mandatory' => true, 'tl_class' => 'long'],
+    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['combinedvalues_format'],
+    'exclude'   => true,
+    'inputType' => 'text',
+    'sql'       => 'text NULL',
+    'eval'      => ['mandatory' => true, 'tl_class' => 'long'],
 ];

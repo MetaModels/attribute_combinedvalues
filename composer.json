@@ -8,13 +8,13 @@
     "combinedvalues"
   ],
   "type": "contao-bundle",
-  "homepage": "http://now.metamodel.me/",
+  "homepage": "https://now.metamodel.me/",
   "license": "LGPL-3.0-or-later",
   "authors": [
     {
       "name": "Christian Schiffler",
       "email": "c.schiffler@cyberspectrum.de",
-      "homepage": "http://www.cyberspectrum.de",
+      "homepage": "https://www.cyberspectrum.de",
       "role": "Developer"
     },
     {
@@ -26,21 +26,23 @@
   "support": {
     "email": "mail@metamodel.me",
     "issues": "https://github.com/MetaModels/attribute_combinedvalues/issues",
-    "wiki": "http://de.contaowiki.org/MetaModels",
+    "wiki": "https://de.contaowiki.org/MetaModels",
     "irc": "irc://irc.freenode.org/contao.mm",
     "source": "https://github.com/MetaModels/attribute_combinedvalues"
   },
   "require": {
-    "php": "^7.1",
-    "contao-community-alliance/dc-general": "^2.1.0",
-    "contao/core-bundle": "^4.4.8",
+    "php": "^7.4",
+    "contao-community-alliance/dc-general": "^2.2",
+    "contao/core-bundle": "^4.9.0, <4.13.0",
+    "doctrine/dbal": "^2.13 || ^3.0",
     "menatwork/contao-multicolumnwizard-bundle": "^3.4",
-    "metamodels/core": "^2.1",
-    "symfony/dependency-injection": "^3.3 || ^4.0"
+    "metamodels/core": "^2.2",
+    "symfony/dependency-injection": "^4.2.7",
+    "symfony/http-kernel": "^4.2.7"
   },
   "require-dev": {
     "contao/manager-plugin": "^2.1",
-    "phpcq/all-tasks": "^1.2"
+    "phpcq/all-tasks": "^1.3"
   },
   "autoload": {
     "psr-4": {
@@ -57,16 +59,15 @@
   },
   "extra": {
     "contao-manager-plugin": "MetaModels\\AttributeCombinedValuesBundle\\ContaoManager\\Plugin",
-    "contao": {
-      "runonce": [
-        "runonce/runonce.php"
-      ]
-    },
     "branch-alias": {
-      "dev-master": "2.1.x-dev"
+      "dev-feature/2.2.0": "2.2.x-dev"
     }
   },
   "config": {
+    "allow-plugins": {
+      "contao-components/installer": false,
+      "contao/manager-plugin": false
+    },
     "sort-packages": true
   }
 }

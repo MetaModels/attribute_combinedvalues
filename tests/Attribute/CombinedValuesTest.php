@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_combinedvalues.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2021 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,8 @@
  *
  * @package    MetaModels/attribute_combinedvalues
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2021 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_combinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -23,10 +24,13 @@ use Doctrine\DBAL\Connection;
 use MetaModels\AttributeCombinedValuesBundle\Attribute\CombinedValues;
 use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests to test class Rating.
+ *
+ * @covers \MetaModels\AttributeCombinedValuesBundle\Attribute\CombinedValues
  */
 class CombinedValuesTest extends TestCase
 {
@@ -36,7 +40,7 @@ class CombinedValuesTest extends TestCase
      * @param string $language         The language.
      * @param string $fallbackLanguage The fallback language.
      *
-     * @return \MetaModels\IMetaModel
+     * @return IMetaModel|MockObject
      */
     protected function mockMetaModel($language, $fallbackLanguage)
     {
@@ -60,7 +64,7 @@ class CombinedValuesTest extends TestCase
     /**
      * Mock the database connection.
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|Connection
+     * @return MockObject|Connection
      */
     private function mockConnection()
     {
@@ -74,7 +78,7 @@ class CombinedValuesTest extends TestCase
      *
      * @param Connection $connection The database connection mock.
      *
-     * @return TableManipulator|\PHPUnit_Framework_MockObject_MockObject
+     * @return TableManipulator|MockObject
      */
     private function mockTableManipulator(Connection $connection)
     {
@@ -97,6 +101,6 @@ class CombinedValuesTest extends TestCase
             $connection,
             $this->mockTableManipulator($connection)
         );
-        $this->assertInstanceOf(CombinedValues::class, $combinedValues);
+        self::assertInstanceOf(CombinedValues::class, $combinedValues);
     }
 }

@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_combinedvalues.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2022 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,8 @@
  * @package    MetaModels/attribute_combinedvalues
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2022 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_combinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -22,6 +23,7 @@ namespace MetaModels\AttributeCombinedValuesBundle\EventListener;
 
 use ContaoCommunityAlliance\DcGeneral\Data\ModelId;
 use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
+use MetaModels\Attribute\IInternal;
 use MetaModels\IFactory;
 
 /**
@@ -66,20 +68,8 @@ class GetOptionsListener
      */
     private function isEventForMe(GetOptionsEvent $event)
     {
-        $input = $event->getEnvironment()->getInputProvider();
-        $type  = $event->getModel()->getProperty('type');
-
-        if ($input->hasValue('type')) {
-            $type = $input->getValue('type');
-        }
-
-        if (empty($type)) {
-            $type = $event->getModel()->getProperty('type');
-        }
-
         return
             ($event->getEnvironment()->getDataDefinition()->getName() === 'tl_metamodel_attribute')
-            && ($type === 'combinedvalues')
             && ($event->getPropertyName() === 'combinedvalues_fields')
             && ($event->getSubPropertyName() === 'field_attribute');
     }
@@ -93,7 +83,7 @@ class GetOptionsListener
      */
     public function getOptions(GetOptionsEvent $event)
     {
-        if (!$this->isEventForMe($event)) {
+        if (null !== $event->getOptions() || !$this->isEventForMe($event)) {
             return;
         }
 
@@ -101,7 +91,7 @@ class GetOptionsListener
         $metaModelId = $model->getProperty('pid');
         if (!$metaModelId) {
             $metaModelId = ModelId::fromSerialized(
-                $event->getEnvironment()->getInputProvider()->getValue('pid')
+                $event->getEnvironment()->getInputProvider()->getParameter('pid')
             )->getId();
         }
 
@@ -113,8 +103,6 @@ class GetOptionsListener
         }
 
         $result = [];
-        // Add meta fields.
-        $result['meta'] = $this->systemColumns;
 
         // Fetch all attributes except for the current attribute.
         foreach ($metaModel->getAttributes() as $attribute) {
@@ -122,12 +110,21 @@ class GetOptionsListener
                 continue;
             }
 
+            // Hide virtual types.
+            if ($attribute instanceof IInternal) {
+                continue;
+            }
+
             $result['attributes'][$attribute->getColName()] = \sprintf(
-                '%s [%s]',
+                '%s [%s, "%s"]',
                 $attribute->getName(),
-                $attribute->get('type')
+                $attribute->get('type'),
+                $attribute->getColName()
             );
         }
+
+        // Add meta fields.
+        $result['meta'] = $this->systemColumns;
 
         $event->setOptions($result);
     }
