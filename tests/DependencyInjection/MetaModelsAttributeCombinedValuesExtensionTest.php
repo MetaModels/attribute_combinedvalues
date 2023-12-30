@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_combinedvalues.
  *
- * (c) 2012-2021 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,7 @@
  * @package    MetaModels/attribute_combinedvalues
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2021 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_combinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -24,6 +24,7 @@ use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
 use MetaModels\AttributeCombinedValuesBundle\Attribute\AttributeTypeFactory;
 use MetaModels\AttributeCombinedValuesBundle\EventListener\GetOptionsListener;
 use MetaModels\AttributeCombinedValuesBundle\DependencyInjection\MetaModelsAttributeCombinedValuesExtension;
+use MetaModels\AttributeCombinedValuesBundle\Schema\DoctrineSchemaGenerator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -34,6 +35,8 @@ use MetaModels\AttributeCombinedValuesBundle\Migration\ChangeColumnTypeMigration
  * This test case test the extension.
  *
  * @covers \MetaModels\AttributeCombinedValuesBundle\DependencyInjection\MetaModelsAttributeCombinedValuesExtension
+ *
+ * @SuppressWarnings(PHPMD.LongClassName)
  */
 class MetaModelsAttributeCombinedValuesExtensionTest extends TestCase
 {
@@ -42,7 +45,7 @@ class MetaModelsAttributeCombinedValuesExtensionTest extends TestCase
      *
      * @return void
      */
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $extension = new MetaModelsAttributeCombinedValuesExtension();
 
@@ -55,35 +58,16 @@ class MetaModelsAttributeCombinedValuesExtensionTest extends TestCase
      *
      * @return void
      */
-    public function testFactoryIsRegistered()
+    public function testFactoryIsRegistered(): void
     {
-        $container = $this->getMockBuilder(ContainerBuilder::class)->getMock();
-
-        $container
-            ->expects(self::exactly(3))
-            ->method('setDefinition')
-            ->withConsecutive(
-                [
-                    'metamodels.attribute_combinedvalues.factory',
-                    self::callback(
-                        function ($value) {
-                            /** @var Definition $value */
-                            $this->assertInstanceOf(Definition::class, $value);
-                            $this->assertEquals(AttributeTypeFactory::class, $value->getClass());
-                            $this->assertCount(1, $value->getTag('metamodels.attribute_factory'));
-
-                            return true;
-                        }
-                    ),
-                ],
-                [
-                    self::anything(),
-                    self::anything(),
-                ]
-            );
+        $container = new ContainerBuilder();
 
         $extension = new MetaModelsAttributeCombinedValuesExtension();
         $extension->load([], $container);
+
+        self::assertTrue($container->hasDefinition('metamodels.attribute_combinedvalues.factory'));
+        $definition = $container->getDefinition('metamodels.attribute_combinedvalues.factory');
+        self::assertCount(1, $definition->getTag('metamodels.attribute_factory'));
     }
 
     /**
@@ -91,52 +75,25 @@ class MetaModelsAttributeCombinedValuesExtensionTest extends TestCase
      *
      * @return void
      */
-    public function testEventListenersAreRegistered()
+    public function testEventListenersAreRegistered(): void
     {
-        $container = $this->getMockBuilder(ContainerBuilder::class)->getMock();
-
-        $container
-            ->expects(self::exactly(3))
-            ->method('setDefinition')
-            ->withConsecutive(
-                [
-                    self::anything(),
-                    self::anything(),
-                ],
-                [
-                    ChangeColumnTypeMigration::class,
-                    self::callback(
-                        function ($value) {
-                            /** @var Definition $value */
-                            $this->assertInstanceOf(Definition::class, $value);
-                            $this->assertCount(1, $value->getTag('contao.migration'));
-
-                            return true;
-                        }
-                    )
-                ],
-                [
-                    'metamodels.attribute_combinedvalues.backend_listner.get_options',
-                    self::callback(
-                        function ($value) {
-                            /** @var Definition $value */
-                            $this->assertInstanceOf(Definition::class, $value);
-                            $this->assertEquals(GetOptionsListener::class, $value->getClass());
-                            $this->assertCount(1, $value->getTag('kernel.event_listener'));
-                            $this->assertEventListener(
-                                $value,
-                                GetOptionsEvent::NAME,
-                                'getOptions'
-                            );
-
-                            return true;
-                        }
-                    )
-                ]
-            );
+        $container = new ContainerBuilder();
 
         $extension = new MetaModelsAttributeCombinedValuesExtension();
         $extension->load([], $container);
+
+        self::assertTrue($container->hasDefinition(ChangeColumnTypeMigration::class));
+        $definition = $container->getDefinition(ChangeColumnTypeMigration::class);
+        self::assertCount(1, $definition->getTag('contao.migration'));
+
+        self::assertTrue($container->hasDefinition('metamodels.attribute_combinedvalues.backend_listner.get_options'));
+        $definition = $container->getDefinition('metamodels.attribute_combinedvalues.backend_listner.get_options');
+        self::assertCount(1, $definition->getTag('kernel.event_listener'));
+        $this->assertEventListener($definition, GetOptionsEvent::NAME, 'getOptions');
+
+        self::assertTrue($container->hasDefinition(DoctrineSchemaGenerator::class));
+        $definition = $container->getDefinition(DoctrineSchemaGenerator::class);
+        self::assertCount(1, $definition->getTag('metamodels.schema-generator.doctrine'));
     }
 
     /**
@@ -148,7 +105,7 @@ class MetaModelsAttributeCombinedValuesExtensionTest extends TestCase
      *
      * @return void
      */
-    private function assertEventListener(Definition $definition, $eventName, $methodName)
+    private function assertEventListener(Definition $definition, string $eventName, string $methodName): void
     {
         self::assertCount(1, $definition->getTag('kernel.event_listener'));
         self::assertArrayHasKey(0, $definition->getTag('kernel.event_listener'));
