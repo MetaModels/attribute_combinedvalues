@@ -107,12 +107,12 @@ class CombinedValues extends BaseSimple
         $strCombinedValues = \vsprintf($this->get('combinedvalues_format'), $arrCombinedValues);
         $strCombinedValues = \trim($strCombinedValues);
 
-        if ($this->get('isunique') && $this->searchFor($strCombinedValues)) {
+        if ($this->get('isunique') && null !== $this->searchFor($strCombinedValues)) {
             // Ensure uniqueness.
             $strBaseValue = $strCombinedValues;
             $arrIds       = [$objItem->get('id')];
             $intCount     = 2;
-            while (\array_diff($this->searchFor($strCombinedValues), $arrIds)) {
+            while (\array_diff($this->searchFor($strCombinedValues) ?? ['__never__'], $arrIds)) {
                 $strCombinedValues = $strBaseValue . ' (' . ($intCount++) . ')';
             }
         }
