@@ -32,6 +32,7 @@ use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types\TextType;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * This migration change the column from varchar(255) to text.
@@ -191,6 +192,7 @@ class ChangeColumnTypeMigration extends AbstractMigration
         $updated = $manager->introspectTable($tableName);
 
         $updated->getColumn($column->getName())
+            ->setType(TextType::getType(Types::TEXT))
             ->setNotnull(false)
             ->setDefault(null);
 
