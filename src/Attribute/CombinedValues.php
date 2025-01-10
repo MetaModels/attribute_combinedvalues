@@ -78,6 +78,7 @@ class CombinedValues extends BaseSimple
         if ($this->get('force_combinedvalues')) {
             $arrFieldDef['eval']['alwaysSave'] = true;
             $arrFieldDef['eval']['readonly']   = true;
+            $arrFieldDef['eval']['doNotCopy']  = true;
         }
 
         return $arrFieldDef;
