@@ -127,7 +127,7 @@ class CombinedValues extends BaseSimple
      */
     public function get($strKey)
     {
-        if ($strKey == 'force_alias') {
+        if ($strKey === 'force_alias') {
             $strKey = 'force_combinedvalues';
         }
 

@@ -1,12 +1,22 @@
 services:
-    metamodels.attribute_combinedvalues.backend_listner.get_options:
-        class: MetaModels\AttributeCombinedValuesBundle\EventListener\GetOptionsListener
-        arguments:
-          - '@metamodels.factory'
-          - '%metamodels.system_columns%'
-        tags:
-          - {
-              name: kernel.event_listener,
-              event: 'men-at-work.multi-column-wizard-bundle.get-options',
-              method: getOptions
-            }
+  metamodels.attribute_combinedvalues.backend_listner.get_options:
+    class: MetaModels\AttributeCombinedValuesBundle\EventListener\GetOptionsListener
+    arguments:
+      - '@metamodels.factory'
+      - '%metamodels.system_columns%'
+    tags:
+      - {
+        name: kernel.event_listener,
+        event: 'men-at-work.multi-column-wizard-bundle.get-options',
+        method: getOptions
+      }
+
+  MetaModels\AttributeCombinedValuesBundle\EventListener\SetDefaultValuesAtCheckboxesListener:
+    arguments:
+      - '@cca.dc-general.scope-matcher'
+      - '@metamodels.factory'
+      - '@translator'
+    tags:
+      - name: kernel.event_listener
+        event: dc-general.model.validate
+        method: onValidateModel
