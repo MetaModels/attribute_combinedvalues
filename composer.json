@@ -38,7 +38,8 @@
     "menatwork/contao-multicolumnwizard-bundle": "^3.4",
     "metamodels/core": "^2.3@dev",
     "symfony/dependency-injection": "^5.4",
-    "symfony/http-kernel": "^5.4"
+    "symfony/http-kernel": "^5.4",
+    "symfony/translation-contracts": "^2.5.2"
   },
   "require-dev": {
     "contao/manager-plugin": "^2.1",
