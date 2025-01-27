@@ -52,7 +52,7 @@ class FindUniqueInVariantsMigration extends AbstractMigration
      */
     public function getName(): string
     {
-        return 'Find unsupported combination of option variant with unique.';
+        return 'Find unsupported combination of option variant with unique for attribute "Combined values".';
     }
 
     /**
