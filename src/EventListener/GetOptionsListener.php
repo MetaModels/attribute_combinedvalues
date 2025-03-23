@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_combinedvalues.
  *
- * (c) 2012-2022 The MetaModels team.
+ * (c) 2012-2023 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,7 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2022 The MetaModels team.
+ * @copyright  2012-2023 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_combinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -22,6 +22,8 @@
 namespace MetaModels\AttributeCombinedValuesBundle\EventListener;
 
 use ContaoCommunityAlliance\DcGeneral\Data\ModelId;
+use ContaoCommunityAlliance\DcGeneral\DataDefinition\ContainerInterface;
+use ContaoCommunityAlliance\DcGeneral\InputProviderInterface;
 use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
 use MetaModels\Attribute\IInternal;
 use MetaModels\IFactory;
@@ -36,7 +38,7 @@ class GetOptionsListener
      *
      * @var IFactory
      */
-    private $factory;
+    private IFactory $factory;
 
     /**
      * All system columns that always are defined in a MetaModel table.
@@ -45,7 +47,7 @@ class GetOptionsListener
      *
      * @var string[]
      */
-    private $systemColumns;
+    private array $systemColumns;
 
     /**
      * Create a new instance.
@@ -68,8 +70,11 @@ class GetOptionsListener
      */
     private function isEventForMe(GetOptionsEvent $event)
     {
+        $dataDefinition = $event->getEnvironment()->getDataDefinition();
+        assert($dataDefinition instanceof ContainerInterface);
+
         return
-            ($event->getEnvironment()->getDataDefinition()->getName() === 'tl_metamodel_attribute')
+            ($dataDefinition->getName() === 'tl_metamodel_attribute')
             && ($event->getPropertyName() === 'combinedvalues_fields')
             && ($event->getSubPropertyName() === 'field_attribute');
     }
@@ -83,15 +88,17 @@ class GetOptionsListener
      */
     public function getOptions(GetOptionsEvent $event)
     {
-        if (null !== $event->getOptions() || !$this->isEventForMe($event)) {
+        if (!$this->isEventForMe($event)) {
             return;
         }
 
-        $model       = $event->getModel();
-        $metaModelId = $model->getProperty('pid');
+        $model         = $event->getModel();
+        $metaModelId   = $model->getProperty('pid');
+        $inputProvider = $event->getEnvironment()->getInputProvider();
+        assert($inputProvider instanceof InputProviderInterface);
         if (!$metaModelId) {
             $metaModelId = ModelId::fromSerialized(
-                $event->getEnvironment()->getInputProvider()->getParameter('pid')
+                $inputProvider->getParameter('pid')
             )->getId();
         }
 

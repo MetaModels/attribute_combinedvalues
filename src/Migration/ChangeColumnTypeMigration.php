@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2021 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,8 @@
  * @package    MetaModels/attribute_alias
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2021 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -25,12 +26,15 @@ namespace MetaModels\AttributeCombinedValuesBundle\Migration;
 use Contao\CoreBundle\Migration\AbstractMigration;
 use Contao\CoreBundle\Migration\MigrationResult;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\ColumnDiff;
-use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types\TextType;
+use Doctrine\DBAL\Types\Types;
+
+use function array_intersect;
+use function array_map;
+use function array_values;
+use function count;
+use function implode;
 
 /**
  * This migration change the column from varchar(255) to text.
@@ -44,7 +48,10 @@ class ChangeColumnTypeMigration extends AbstractMigration
      *
      * @var Connection
      */
-    private $connection;
+    private Connection $connection;
+
+    /** @var list<string> */
+    private array $existsCache = [];
 
     /**
      * Create a new instance.
@@ -76,9 +83,7 @@ class ChangeColumnTypeMigration extends AbstractMigration
      */
     public function shouldRun(): bool
     {
-        $schemaManager = $this->connection->getSchemaManager();
-
-        if (!$schemaManager->tablesExist(['tl_metamodel', 'tl_metamodel_attribute'])) {
+        if (!$this->tablesExist(['tl_metamodel', 'tl_metamodel_attribute'])) {
             return false;
         }
 
@@ -120,19 +125,21 @@ class ChangeColumnTypeMigration extends AbstractMigration
         if (empty($langColumns)) {
             return [];
         }
-        $schemaManager = $this->connection->getSchemaManager();
+        $schemaManager = $this->connection->createSchemaManager();
 
         $result = [];
         foreach ($langColumns as $tableName => $tableColumnNames) {
+            if (!$this->tablesExist([$tableName])) {
+                continue;
+            }
+
             /** @var Column[] $columns */
             $columns = [];
             // The schema manager return the column list with lowercase keys, wo got to use the real names.
-            \array_map(
-                function (Column $column) use (&$columns) {
-                    $columns[$column->getName()] = $column;
-                },
-                $schemaManager->listTableColumns($tableName)
-            );
+            $table = $schemaManager->introspectTable($tableName);
+            foreach ($table->getColumns() as $column) {
+                $columns[$column->getName()] = $column;
+            }
             foreach ($tableColumnNames as $tableColumnName) {
                 $column = ($columns[$tableColumnName] ?? null);
                 if (null === $column) {
@@ -163,7 +170,7 @@ class ChangeColumnTypeMigration extends AbstractMigration
             ->leftJoin('attribute', 'tl_metamodel', 'metamodel', 'attribute.pid = metamodel.id')
             ->where('attribute.type=:type')
             ->setParameter('type', 'combinedvalues')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         $result = [];
@@ -187,25 +194,32 @@ class ChangeColumnTypeMigration extends AbstractMigration
      */
     private function fixColumn(string $tableName, Column $column): void
     {
-        $manager = $this->connection->getSchemaManager();
-        $table   = $manager->listTableDetails($tableName);
+        $manager = $this->connection->createSchemaManager();
+        $table   = $manager->introspectTable($tableName);
+        $updated = $manager->introspectTable($tableName);
 
-        $changeColumn = new Column($column->getName(), new TextType());
-        $changeColumn
-            ->setLength(MySqlPlatform::LENGTH_LIMIT_TEXT)
+        $updated->getColumn($column->getName())
+            ->setType(TextType::getType(Types::TEXT))
             ->setNotnull(false)
             ->setDefault(null);
-        $columnDiff = new ColumnDiff($column->getName(), $changeColumn);
 
-        $tableDiff                   = new TableDiff($tableName);
-        $tableDiff->fromTable        = $table;
-        $tableDiff->changedColumns[] = $columnDiff;
+        $tableDiff = $manager->createComparator()->compareTables($table, $updated);
+
         $manager->alterTable($tableDiff);
 
         $this->connection->createQueryBuilder()
             ->update($tableName, 't')
             ->set('t.' . $column->getName(), 'null')
             ->where('t.' . $column->getName() . ' = ""')
-            ->execute();
+            ->executeQuery();
+    }
+
+    private function tablesExist(array $tableNames): bool
+    {
+        if ([] === $this->existsCache) {
+            $this->existsCache = array_values($this->connection->createSchemaManager()->listTableNames());
+        }
+
+        return count($tableNames) === count(array_intersect($tableNames, array_map('strtolower', $this->existsCache)));
     }
 }

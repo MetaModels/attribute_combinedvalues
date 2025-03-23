@@ -1,14 +1,24 @@
 services:
-    metamodels.attribute_combinedvalues.factory:
-        class: MetaModels\AttributeCombinedValuesBundle\Attribute\AttributeTypeFactory
-        arguments:
-            - '@database_connection'
-            - '@metamodels.table_manipulator'
-        tags:
-          - { name: metamodels.attribute_factory }
+  metamodels.attribute_combinedvalues.factory:
+    class: MetaModels\AttributeCombinedValuesBundle\Attribute\AttributeTypeFactory
+    arguments:
+      - '@database_connection'
+      - '@metamodels.table_manipulator'
+    tags:
+      - { name: metamodels.attribute_factory }
 
-    MetaModels\AttributeCombinedValuesBundle\Migration\ChangeColumnTypeMigration:
-        arguments:
-            - '@database_connection'
-        tags:
-            - name: contao.migration
+  MetaModels\AttributeCombinedValuesBundle\Migration\ChangeColumnTypeMigration:
+    arguments:
+      - '@database_connection'
+    tags:
+      - name: contao.migration
+
+  MetaModels\AttributeCombinedValuesBundle\Migration\FindUniqueInVariantsMigration:
+    arguments:
+      - '@database_connection'
+    tags:
+      - name: contao.migration
+
+  MetaModels\AttributeCombinedValuesBundle\Schema\DoctrineSchemaGenerator:
+    tags:
+      - { name: 'metamodels.schema-generator.doctrine' }

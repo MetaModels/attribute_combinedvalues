@@ -1,1 +1,1 @@
-<span class="text<?php echo $this->additional_class; ?>"><?php echo $this->raw; ?></span>
+<span class="text combinedvalues<?= $this->additional_class ?>"><?= $this->raw ?></span>

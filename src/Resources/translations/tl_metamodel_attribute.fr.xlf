@@ -1,0 +1,74 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="src/Resources/translations/tl_metamodel_attribute.en.xlf" target-language="fr">
+    <body>
+      <trans-unit id="typeOptions.combinedvalues" resname="typeOptions.combinedvalues">
+        <source>Combined values</source>
+        <target>Valeurs combinées</target>
+      </trans-unit>
+      <trans-unit id="combinedvalues_fields.label" resname="combinedvalues_fields.label">
+        <source>Fields</source>
+        <target>Champs</target>
+      </trans-unit>
+      <trans-unit id="combinedvalues_fields.description" resname="combinedvalues_fields.description">
+        <source>Please select one or more attributes to combine.</source>
+        <target>Sélectionner le ou les attribut(s) à combiner</target>
+      </trans-unit>
+      <trans-unit id="field_attribute.label" resname="field_attribute.label">
+        <source>Attributes</source>
+        <target>Attributs</target>
+      </trans-unit>
+      <trans-unit id="field_attribute.description" resname="field_attribute.description">
+        <source>Select the attributes to be combined.</source>
+        <target>Sélectionner les attributs à combiner</target>
+      </trans-unit>
+      <trans-unit id="force_combinedvalues.label" resname="force_combinedvalues.label">
+        <source>Force regenerating</source>
+        <target>Forcer la régénération</target>
+      </trans-unit>
+      <trans-unit id="force_combinedvalues.description" resname="force_combinedvalues.description">
+        <source>Check this, if you want the combined values to be regenerated whenever any of the dependant fields is changed.</source>
+        <target>Cocher pour que les valeurs combinées soient recréées à chaque fois que la valeur d'un des champs est modifiée.</target>
+      </trans-unit>
+      <trans-unit id="combinedvalues_format.label" resname="combinedvalues_format.label">
+        <source>Format</source>
+        <target>Format</target>
+      </trans-unit>
+      <trans-unit id="combinedvalues_format.description" resname="combinedvalues_format.description">
+        <source>Use &quot;%s&quot; or any other placeholder to create a formatted text. You must have the same number of placeholders as selected attributes. See at &quot;https://www.php.net/sprintf&quot; for more information.</source>
+        <target>Utiliser &quot;%s&quot; ou tout autre placeholder pour créer un texte formaté. il doit y avoir le même nombre de placeholders que d'attributs sélectionnés. Aller à &quot;https://www.php.net/sprintf&quot; pour plus d'information.</target>
+      </trans-unit>
+      <trans-unit id="select_values.id" resname="select_values.id">
+        <source>ID</source>
+        <target>ID</target>
+      </trans-unit>
+      <trans-unit id="select_values.pid" resname="select_values.pid">
+        <source>PID</source>
+        <target>PID</target>
+      </trans-unit>
+      <trans-unit id="select_values.sorting" resname="select_values.sorting">
+        <source>Sorting</source>
+        <target>Tri</target>
+      </trans-unit>
+      <trans-unit id="select_values.tstamp" resname="select_values.tstamp">
+        <source>Timestamp</source>
+        <target>Timestamp</target>
+      </trans-unit>
+      <trans-unit id="select_values.vargroup" resname="select_values.vargroup">
+        <source>Vargroup</source>
+        <target>Vargroup</target>
+      </trans-unit>
+      <trans-unit id="select_values.varbase" resname="select_values.varbase">
+        <source>Varbase</source>
+        <target>Varbase</target>
+      </trans-unit>
+      <trans-unit id="select_values.meta" resname="select_values.meta">
+        <source>Metafields</source>
+        <target>Metafields</target>
+      </trans-unit>
+      <trans-unit id="select_values.attributes" resname="select_values.attributes">
+        <source>Attributes</source>
+        <target>Attributs</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
